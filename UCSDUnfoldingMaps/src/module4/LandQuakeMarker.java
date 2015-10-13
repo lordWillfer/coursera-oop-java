@@ -11,16 +11,13 @@ import processing.core.PGraphics;
  */
 public class LandQuakeMarker extends EarthquakeMarker {
 	
-	
 	public LandQuakeMarker(PointFeature quake) {
-		
 		// calling EarthquakeMarker constructor
 		super(quake);
 		
 		// setting field in earthquake marker
 		isOnLand = true;
 	}
-
 
 	@Override
 	public void drawEarthquake(PGraphics pg, float x, float y) {
@@ -32,17 +29,12 @@ public class LandQuakeMarker extends EarthquakeMarker {
 		// HINT: Notice the radius variable in the EarthquakeMarker class
 		// and how it is set in the EarthquakeMarker constructor
 		
-		// TODO: Implement this method
-		
+		// Implement this method
+		pg.ellipse(x, y, getRadius(), getRadius());
 	}
-	
 
 	// Get the country the earthquake is in
 	public String getCountry() {
 		return (String) getProperty("country");
 	}
-
-
-
-		
 }

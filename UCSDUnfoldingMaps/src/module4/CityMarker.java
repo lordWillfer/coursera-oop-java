@@ -22,11 +22,9 @@ public class CityMarker extends SimplePointMarker {
 		super(location);
 	}
 	
-	
 	public CityMarker(Feature city) {
 		super(((PointFeature)city).getLocation(), city.getProperties());
 	}
-	
 	
 	// HINT: pg is the graphics object on which you call the graphics
 	// methods.  e.g. pg.fill(255, 0, 0) will set the color to red
@@ -42,7 +40,10 @@ public class CityMarker extends SimplePointMarker {
 		// Save previous drawing style
 		pg.pushStyle();
 		
-		// TODO: Add code to draw a triangle to represent the CityMarker
+		// Add code to draw a triangle to represent the CityMarker
+		pg.stroke(pg.color(0, 0, 0));
+		pg.fill(pg.color(255, 0, 0));
+		pg.triangle(x, y - TRI_SIZE, x + TRI_SIZE, y, x - TRI_SIZE, y);
 		
 		// Restore previous drawing style
 		pg.popStyle();
@@ -64,5 +65,4 @@ public class CityMarker extends SimplePointMarker {
 	{
 		return Float.parseFloat(getStringProperty("population"));
 	}
-	
 }
