@@ -125,6 +125,12 @@ public class EarthquakeCityMap extends PApplet {
 		addKey();
 	}
 	
+	public void keyPressed() {
+		if (key == 'w') {
+			background(255, 255, 255);
+		}
+	}
+	
 	// Helper method to draw key in GUI
 	// Update this method as appropriate
 	private void addKey() {

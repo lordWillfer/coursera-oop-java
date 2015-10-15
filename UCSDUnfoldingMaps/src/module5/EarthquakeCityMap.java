@@ -20,7 +20,7 @@ import processing.core.PApplet;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
+ * @author Williams Fernandez
  * Date: July 17, 2015
  * */
 public class EarthquakeCityMap extends PApplet {
@@ -100,7 +100,7 @@ public class EarthquakeCityMap extends PApplet {
 		  }
 		  // OceanQuakes
 		  else {
-		    quakeMarkers.add(new OceanQuakeMarker(feature));
+		    quakeMarkers.add(new OceanQuakeMarker(feature, map));
 		  }
 	    }
 
@@ -115,12 +115,10 @@ public class EarthquakeCityMap extends PApplet {
 	    
 	}  // End setup
 	
-	
 	public void draw() {
 		background(0);
 		map.draw();
 		addKey();
-		
 	}
 	
 	/** Event handler that gets called automatically when the 
@@ -145,7 +143,15 @@ public class EarthquakeCityMap extends PApplet {
 	// 
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
-		// TODO: Implement this method
+		// Implement this method
+		// Select the marker and call it's setSelected() method with first argument as true 
+		for (Marker marker: markers){
+			if(marker.isInside(map, mouseX, mouseY)){
+				lastSelected = (CommonMarker) marker;
+				lastSelected.setSelected(true);
+				break;
+			}
+		}
 	}
 	
 	/** The event handler for mouse clicks
@@ -156,11 +162,43 @@ public class EarthquakeCityMap extends PApplet {
 	@Override
 	public void mouseClicked()
 	{
-		// TODO: Implement this method
+		// Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		// instantly saving the x and y coordinates of the click
+		float x = mouseX;
+		float y = mouseY;
+		
+		// lastClicked tells us if it was clicked before
+		if (lastClicked != null) {
+			lastClicked.setClicked(false);
+			lastClicked = null;
+			unhideMarkers();
+		}
+		
+		if (clickMarkerIfClicked(quakeMarkers, x, y) 
+		||	clickMarkerIfClicked(cityMarkers, x, y)){
+			hideSafeMarkers();
+		}
 	}
 	
+	private void hideSafeMarkers(){
+		lastClicked.showThreat(quakeMarkers, cityMarkers);
+	}
+	
+	// If there was a marker underneath the mouse when it was clicked 
+	// it's clicked property is set to true
+	// returns true if the marker was found underneath it
+	private boolean clickMarkerIfClicked(List<Marker> markers, float x, float y){
+		for (Marker marker: markers){
+			if (marker.isInside(map, x, y)){
+				lastClicked = (CommonMarker) marker;
+				lastClicked.setClicked(true);
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	// loop over and unhide all markers
 	private void unhideMarkers() {
@@ -233,17 +271,13 @@ public class EarthquakeCityMap extends PApplet {
 		strokeWeight(2);
 		line(centerx-8, centery-8, centerx+8, centery+8);
 		line(centerx-8, centery+8, centerx+8, centery-8);
-			
 	}
-
-	
 	
 	// Checks whether this quake occurred on land.  If it did, it sets the 
 	// "country" property of its PointFeature to the country where it occurred
 	// and returns true.  Notice that the helper method isInCountry will
 	// set this "country" property already.  Otherwise it returns false.	
 	private boolean isLand(PointFeature earthquake) {
-		
 		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
 		// If it is, add 1 to the entry in countryQuakes corresponding to this country.
 		for (Marker country : countryMarkers) {
@@ -279,8 +313,6 @@ public class EarthquakeCityMap extends PApplet {
 		System.out.println("OCEAN QUAKES: " + totalWaterQuakes);
 	}
 	
-	
-	
 	// helper method to test whether a given earthquake is in a given country
 	// This will also add the country property to the properties of the earthquake feature if 
 	// it's in one of the countries.
@@ -314,5 +346,4 @@ public class EarthquakeCityMap extends PApplet {
 		}
 		return false;
 	}
-
 }

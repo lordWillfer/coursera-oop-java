@@ -1,6 +1,9 @@
 package module5;
 
+import java.util.*;
+
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import processing.core.PGraphics;
 
@@ -11,7 +14,6 @@ import processing.core.PGraphics;
  *
  */
 public abstract class CommonMarker extends SimplePointMarker {
-
 	// Records whether this marker has been clicked (most recently)
 	protected boolean clicked = false;
 	
@@ -44,8 +46,17 @@ public abstract class CommonMarker extends SimplePointMarker {
 			if (selected) {
 				showTitle(pg, x, y);  // You will implement this in the subclasses
 			}
+			
+			// Important note
+			// showThreat() will not be implemented here
+			// REASON 1: You don't have to draw it
+			// REASON 2: You have to setHidden one time to true and false
+			// REASON 3: You can't get the List<Marker> necessary for calculating the threat
+			//			 for each marker
 		}
 	}
+	
 	public abstract void drawMarker(PGraphics pg, float x, float y);
 	public abstract void showTitle(PGraphics pg, float x, float y);
+	public abstract void showThreat(List<Marker> quakeMarkers, List<Marker> cityMarkers);
 }
