@@ -1,7 +1,6 @@
 package module6;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
@@ -85,7 +84,7 @@ public class EarthquakeCityMap extends PApplet {
 		//earthquakesURL = "test2.atom";
 		
 		// Uncomment this line to take the quiz
-		//earthquakesURL = "quiz2.atom";
+		earthquakesURL = "quiz2.atom";
 		
 		
 		// (2) Reading in earthquake data and geometric properties
@@ -124,7 +123,8 @@ public class EarthquakeCityMap extends PApplet {
 	    map.addMarkers(quakeMarkers);
 	    map.addMarkers(cityMarkers);
 	    
-	    
+	    System.out.println("##################################");
+	    sortAndPrint(100);
 	}  // End setup
 	
 	
@@ -139,6 +139,43 @@ public class EarthquakeCityMap extends PApplet {
 	// TODO: Add the method:
 	//   private void sortAndPrint(int numToPrint)
 	// and then call that method from setUp
+	private void sortAndPrint(int numToPrint) 
+	{
+		EarthquakeMarker markersArray[] = new EarthquakeMarker[quakeMarkers.size()];
+		markersArray = sortQuakes(quakeMarkers.toArray(markersArray));
+		
+		if(numToPrint > quakeMarkers.size()) 
+		{
+			numToPrint = quakeMarkers.size();
+		}
+				
+		for ( int i = 0; i < numToPrint; i++) 
+		{
+			System.out.println(markersArray[i].getTitle());
+		}
+	}
+	
+	private EarthquakeMarker[] sortQuakes(EarthquakeMarker[] markersArray) 
+	{
+		int i, j, first;
+		EarthquakeMarker temp;
+		
+		for( i = markersArray.length - 1; i > 0; i-- ) 
+		{
+			first = 0;
+			for( j = 1; j <= i; j++) 
+			{
+				if(markersArray[j].compareTo(markersArray[first]) == -1) 
+				{
+					first = j;
+				}
+				temp = markersArray[first];
+				markersArray[first] = markersArray[i];
+				markersArray[i] = temp;
+			}
+		}
+		return markersArray;
+	}
 	
 	/** Event handler that gets called automatically when the 
 	 * mouse moves.
@@ -270,7 +307,7 @@ public class EarthquakeCityMap extends PApplet {
 		int xbase = 25;
 		int ybase = 50;
 		
-		rect(xbase, ybase, 150, 250);
+		rect(xbase, ybase, 170, 500);
 		
 		fill(0);
 		textAlign(LEFT, CENTER);
@@ -313,6 +350,17 @@ public class EarthquakeCityMap extends PApplet {
 		text("Deep", xbase+50, ybase+180);
 
 		text("Past hour", xbase+50, ybase+200);
+		
+		text("TOP 10 MAGNITUDE", xbase + 5, ybase + 240);
+		text("Indonesia, 7.0", xbase + 5, ybase + 260);
+		text("Alaska, 6.9", xbase + 5, ybase + 280);
+		text("Solomon Islands, 6.6", xbase + 5, ybase + 300);
+		text("Barbados, 6.5", xbase + 5, ybase + 320);
+		text("Solomon Islands, 6.4", xbase + 5, ybase + 340);
+		text("Alaska, 6.3", xbase + 5, ybase + 360);
+		text("Indonesia, 6.0", xbase + 5, ybase + 380);
+		text("Afghanistan, 5.9", xbase + 5, ybase + 400);
+		text("South of the Fiji Islands, 5.9", xbase + 5, ybase + 420);
 		
 		fill(255, 255, 255);
 		int centerx = xbase+35;
